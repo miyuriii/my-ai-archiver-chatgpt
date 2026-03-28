@@ -1,0 +1,42 @@
+{
+  "manifest_version": 2,
+  "name": "ChatGPT Archiver",
+  "version": "1.0",
+  "description": "Save ChatGPT conversations to GitHub",
+  "icons": {
+    "48": "icons/icon-chatgpt-48.png",
+    "96": "icons/icon-chatgpt-96.png"
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon-chatgpt-48.png",
+      "96": "icons/icon-chatgpt-96.png"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "chatgpt-archiver@miyuri"
+    }
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "downloads",
+    "tabs",
+    "activeTab",
+    "nativeMessaging",
+    "https://chatgpt.com/*",
+    "https://api.github.com/*"
+  ]
+}
