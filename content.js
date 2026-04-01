@@ -33,12 +33,19 @@ function extractConversation() {
       const role = el.getAttribute('data-message-author-role');
       if (role !== 'user' && role !== 'assistant') continue;
       const last = merged[merged.length - 1];
+      const text = getCleanText(el);
       if (last && last.role === role) {
-        last.texts.push(getCleanText(el));
+        const alreadyIncluded = last.texts.some(
+          t => t.includes(text) || text.includes(t)
+        );
+        if (!alreadyIncluded) {
+          last.texts.push(text);
+        }
       } else {
-        merged.push({ role, texts: [getCleanText(el)] });
+        merged.push({ role, texts: [text] });
       }
     }
+
     for (const { role, texts } of merged) {
       const label = role === 'user' ? '👩 みゆり' : '🤖 ChatGPT';
       const text = texts.filter(Boolean).join('\n\n');
